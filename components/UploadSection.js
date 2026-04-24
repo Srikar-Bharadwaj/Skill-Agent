@@ -28,7 +28,12 @@ export default function UploadSection({ onStart }) {
 
     try {
       const arrayBuffer = await file.arrayBuffer();
-      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const pdf = await pdfjsLib.getDocument({ 
+        data: arrayBuffer,
+        disableAutoFetch: true,
+        disableStream: true,
+        disableFontFace: true
+      }).promise;
       let fullText = "";
       
       for (let i = 1; i <= pdf.numPages; i++) {

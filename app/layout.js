@@ -1,6 +1,6 @@
 import { Outfit, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import CursorGlow from "@/components/CursorGlow";
+import CursorBubbles from "@/components/CursorBubbles";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -24,7 +24,7 @@ export default function RootLayout({ children }) {
       className={`${outfit.variable} ${geistMono.variable} h-full antialiased dark`}
     >
       <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
-        <CursorGlow />
+        <CursorBubbles />
         <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-40 p-4 font-semibold text-lg">
           Catalyst
         </nav>
