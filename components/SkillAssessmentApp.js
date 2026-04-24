@@ -35,8 +35,30 @@ export default function SkillAssessmentApp() {
     setStep("upload");
   };
 
+  const getContextColor = () => {
+    switch(step) {
+      case "chat": return "bg-blue-500/20";
+      case "results": return "bg-green-500/20";
+      default: return "bg-primary/20"; // upload, ats
+    }
+  };
+  const getContextColor2 = () => {
+    switch(step) {
+      case "chat": return "bg-indigo-500/20";
+      case "results": return "bg-emerald-500/20";
+      default: return "bg-purple-500/20";
+    }
+  };
+
   return (
-    <div className="relative min-h-[500px] glass-panel rounded-2xl p-6 sm:p-8">
+    <>
+      {/* Context-Aware UI Background */}
+      <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none transition-colors duration-1000">
+        <div className={`absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full blur-[120px] orb transition-colors duration-1000 ${getContextColor()}`} />
+        <div className={`absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full blur-[120px] orb transition-colors duration-1000 ${getContextColor2()}`} style={{ animationDelay: "-3s" }} />
+      </div>
+
+      <div className="relative min-h-[500px] glass-panel rounded-2xl p-6 sm:p-8">
       <AnimatePresence mode="wait">
         {step === "upload" && (
           <motion.div
@@ -91,5 +113,6 @@ export default function SkillAssessmentApp() {
         )}
       </AnimatePresence>
     </div>
+    </>
   );
 }

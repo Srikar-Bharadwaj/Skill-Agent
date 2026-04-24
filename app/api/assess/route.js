@@ -54,10 +54,13 @@ CRITICAL INSTRUCTION: You MUST heavily penalize the \`overallScore\` (e.g., drop
 Do not output any markdown formatting like \`\`\`json. Output ONLY valid, parsable JSON matching this schema:
 {
   "overallScore": number (0-100),
-  "summary": "2-3 sentences summarizing their performance",
-  "gaps": ["Array of string descriptions of missing knowledge or weak points"],
+  "confidenceScore": number (0-100) - How confident are you in their depth of knowledge?,
+  "depthRating": string ("Superficial", "Adequate", "Deep"),
   "skills": [
-    { "name": "Skill Name", "score": number (0-100) }
+    { "name": "React", "score": 85 }
+  ],
+  "gaps": [
+    "Specific missing knowledge areas"
   ],
   "learningPlan": [
     { "title": "Week 1 Focus", "description": "Specific topics to learn" }
@@ -67,6 +70,7 @@ Do not output any markdown formatting like \`\`\`json. Output ONLY valid, parsab
       "topic": "Python Time Complexity",
       "issue": "User gave vague answer",
       "explanation": "Dictionary lookup is O(1)",
+      "correctVersion": "The correct answer should explain hash maps and collision handling.",
       "resource": "https://react.dev/reference/react/useState"
     }
   ]

@@ -7,7 +7,20 @@ export default function ResultsDashboard({ result, onReset }) {
   if (!result) return null;
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-6 animate-in fade-in duration-500">
+      {/* Integrity System Flag */}
+      {result.integrity?.flagged && (
+        <div className="bg-red-500/10 border border-red-500/50 rounded-2xl p-4 flex items-center gap-3">
+          <AlertTriangle className="w-6 h-6 text-red-500" />
+          <div>
+            <h3 className="font-bold text-red-400">Integrity Warning</h3>
+            <p className="text-sm text-red-300">
+              Suspicious activity detected. Paste events: {result.integrity.pasteCount} | Fast answers: {result.integrity.fastAnswers}
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="text-center space-y-2">
         <h2 className="text-2xl font-bold">Assessment Complete</h2>
         <p className="text-gray-400 text-sm">Here is your gap analysis and learning plan.</p>
@@ -27,6 +40,20 @@ export default function ResultsDashboard({ result, onReset }) {
           <p className="text-sm text-gray-300 leading-relaxed mt-4">
             {result.summary || "Based on the assessment, you show a foundational understanding but have specific areas to improve."}
           </p>
+
+          {/* Confidence & Depth Analysis */}
+          {result.confidenceScore && (
+            <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-400">Confidence Score</p>
+                <p className="text-lg font-bold text-white">{result.confidenceScore}%</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-gray-400">Depth Rating</p>
+                <p className="text-lg font-bold text-primary">{result.depthRating}</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Skill Gaps */}
@@ -62,6 +89,12 @@ export default function ResultsDashboard({ result, onReset }) {
                 <h4 className="font-semibold text-gray-200 mb-1">{mistake.topic}</h4>
                 <p className="text-sm text-red-300/80 mb-2 font-medium">Issue: {mistake.issue}</p>
                 <p className="text-sm text-gray-400 mb-3">{mistake.explanation}</p>
+                {mistake.correctVersion && (
+                  <div className="bg-green-500/10 border border-green-500/20 p-3 rounded-lg mb-3">
+                    <p className="text-xs text-green-400 font-semibold mb-1">Correct Version:</p>
+                    <p className="text-sm text-green-300/90">{mistake.correctVersion}</p>
+                  </div>
+                )}
                 {mistake.resource && (
                   <a href={mistake.resource} target="_blank" rel="noreferrer" className="text-xs text-primary hover:underline flex items-center gap-1">
                     Study Resource <RotateCcw className="w-3 h-3" />

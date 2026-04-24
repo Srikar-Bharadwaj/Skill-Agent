@@ -9,6 +9,12 @@ export default function ChatAssessment({ jd, resume, onComplete }) {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isInitializing, setIsInitializing] = useState(true);
+  
+  // Integrity System State
+  const [pasteCount, setPasteCount] = useState(0);
+  const [fastAnswers, setFastAnswers] = useState(0);
+  const [startTime, setStartTime] = useState(Date.now());
+  
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -42,6 +48,9 @@ export default function ChatAssessment({ jd, resume, onComplete }) {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (messages.length > 0 && messages[messages.length - 1].role === "assistant") {
+      setStartTime(Date.now());
+    }
   }, [messages]);
 
   const handleSend = async (e) => {
@@ -56,6 +65,16 @@ export default function ChatAssessment({ jd, resume, onComplete }) {
     try {
       const lastAiMessage = messages.length > 0 ? messages[messages.length - 1].content : "Initial Question";
       
+      // Integrity Check: Response Time
+      const responseTime = Date.now() - startTime;
+      const minTime = lastAiMessage.length * 30; // Adaptive threshold based on question length
+      let updatedFastAnswers = fastAnswers;
+      
+      if (responseTime < minTime) {
+        updatedFastAnswers += 1;
+        setFastAnswers(updatedFastAnswers);
+      }
+
       // Save to mini database asynchronously
       fetch("/api/save", {
         method: "POST",
@@ -80,7 +99,14 @@ export default function ChatAssessment({ jd, resume, onComplete }) {
       const data = await response.json();
       
       if (data.isComplete) {
-        onComplete(data.result);
+        onComplete({
+          ...data.result,
+          integrity: {
+            pasteCount,
+            fastAnswers: updatedFastAnswers,
+            flagged: pasteCount > 0 || updatedFastAnswers >= 2
+          }
+        });
       } else if (data.message) {
         setMessages((prev) => [...prev, { role: "assistant", content: data.message }]);
       }
@@ -150,19 +176,20 @@ export default function ChatAssessment({ jd, resume, onComplete }) {
       </div>
 
       {/* Input Form */}
-      <form onSubmit={handleSend} className="relative">
+      <form onSubmit={handleSend} className="relative flex items-center w-full bg-black/50 border border-white/10 rounded-full py-3 px-4 focus-within:ring-2 focus-within:ring-primary/50 transition-all">
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           disabled={isLoading || isInitializing}
           placeholder="Type your answer here..."
-          className="w-full bg-black/50 border border-white/10 rounded-full py-3 pl-4 pr-12 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all disabled:opacity-50"
+          className="flex-1 bg-transparent border-none focus:outline-none text-gray-200 placeholder-gray-500 text-sm disabled:opacity-50"
+          onPaste={() => setPasteCount(prev => prev + 1)}
         />
         <button
           type="submit"
           disabled={!input.trim() || isLoading || isInitializing}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-2 rounded-full bg-primary text-white hover:bg-indigo-500 disabled:opacity-50 disabled:hover:bg-primary transition-colors"
+          className="ml-2 p-2 rounded-full bg-primary text-white hover:bg-indigo-500 disabled:opacity-50 disabled:hover:bg-primary transition-colors"
         >
           <Send className="w-4 h-4" />
         </button>

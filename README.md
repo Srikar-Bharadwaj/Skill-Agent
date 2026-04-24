@@ -16,19 +16,34 @@ bun dev
 
 # Catalyst: AI-Powered Skill Assessment Agent
 
-## 🧩 V2 Features
+## 🧩 Top-Tier Features
 
-### 1️⃣ ATS Resume Scanner
-Implemented an AI-powered ATS (Applicant Tracking System) simulation module that analyzes resumes against job descriptions using LLM-based semantic matching. The system generates an ATS score, identifies missing keywords, and provides actionable enhancement suggestions.
+### 🧠 Integrity System
+Implemented a behavior-aware integrity monitoring system that evaluates user interaction patterns, including paste events and adaptive response latency, to flag potentially assisted responses.
 
-### 2️⃣ Mistake-Based Learning
-Integrated a feedback-driven learning module that analyzes user responses during the technical interview and identifies knowledge gaps. The system generates contextual explanations and curated learning resources for each incorrect or weak response.
+### 🧠 Confidence & Depth Analysis
+Introduced AI-driven confidence scoring and depth analysis to assess not just correctness but conceptual understanding during the interview.
 
-### 3️⃣ Dynamic Background
-Designed a visually engaging UI using animated gradients and floating elements to enhance user experience and maintain engagement during multi-step assessments.
+### 🧠 Explainable Mistakes
+Enabled explainable feedback by generating corrected responses and reasoning, transforming the system into an interactive learning assistant.
 
-### 4️⃣ Mini Database (Quick Revision Notes)
-Implemented a lightweight persistence layer to store previously asked technical questions and user responses, enabling users to review key concepts as quick revision notes before interviews.
+### 🧠 Context-Aware UI
+Designed a state-aware UI that dynamically adapts visual feedback based on system state, enhancing engagement during assessments.
+
+### 🧠 ATS Scan & Resume Upload
+Evaluates resumes against job descriptions using LLM-based semantic matching. Supports direct PDF uploads with client-side to serverless text extraction.
+
+### 🧠 Pre-Interview Revision Mode
+Built a lightweight revision system that surfaces previously asked questions and weak areas, enabling targeted pre-interview preparation.
+
+## 🎯 Demo Script Guide
+
+When demoing this project, follow this narrative for maximum impact:
+1. "We start with ATS analysis, supporting direct PDF uploads."
+2. "Then we conduct adaptive questioning based on the ATS results."
+3. "We don't just evaluate correctness — we evaluate depth and confidence."
+4. "We also track behavioral integrity signals like paste events and response latency."
+5. "Finally, we generate explainable feedback and a targeted learning roadmap."
 
 ## Overview
 
