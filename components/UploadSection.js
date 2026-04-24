@@ -2,10 +2,7 @@
 
 import { useState, useRef } from "react";
 import { FileText, Briefcase, ArrowRight, Upload, Loader2 } from "lucide-react";
-import * as pdfjsLib from "pdfjs-dist/build/pdf";
 
-// Configure pdfjs worker to run from CDN
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 export default function UploadSection({ onStart }) {
   const [jd, setJd] = useState("");
@@ -28,6 +25,8 @@ export default function UploadSection({ onStart }) {
 
     try {
       const arrayBuffer = await file.arrayBuffer();
+      const pdfjsLib = await import("pdfjs-dist/build/pdf");
+      pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
       const pdf = await pdfjsLib.getDocument({ 
         data: arrayBuffer,
         disableAutoFetch: true,
