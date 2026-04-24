@@ -2,6 +2,10 @@
 
 import { useState, useRef } from "react";
 import { FileText, Briefcase, ArrowRight, Upload, Loader2 } from "lucide-react";
+import * as pdfjsLib from "pdfjs-dist/build/pdf";
+
+// Configure pdfjs worker to run from CDN
+pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
 
 export default function UploadSection({ onStart }) {
   const [jd, setJd] = useState("");
@@ -21,19 +25,23 @@ export default function UploadSection({ onStart }) {
     if (!file) return;
 
     setIsParsingPdf(true);
-    const formData = new FormData();
-    formData.append("file", file);
 
     try {
-      const response = await fetch("/api/parse-pdf", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await response.json();
-      if (data.text) {
-        setResume(data.text);
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      let fullText = "";
+      
+      for (let i = 1; i <= pdf.numPages; i++) {
+        const page = await pdf.getPage(i);
+        const textContent = await page.getTextContent();
+        const pageText = textContent.items.map(item => item.str).join(" ");
+        fullText += pageText + "\n";
+      }
+
+      if (fullText.trim()) {
+        setResume(fullText);
       } else {
-        alert("Could not extract text from PDF.");
+        alert("Could not extract text from this PDF. It may be an image-based PDF.");
       }
     } catch (error) {
       console.error("PDF upload error:", error);

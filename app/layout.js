@@ -1,5 +1,6 @@
 import { Outfit, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import CursorGlow from "@/components/CursorGlow";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -13,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "Catalyst | AI Skill Assessment",
-  description: "Cheat-proof, AI-powered technical skill assessment.",
+  description: "AI-powered adaptive technical interviews.",
 };
 
 export default function RootLayout({ children }) {
@@ -22,7 +23,13 @@ export default function RootLayout({ children }) {
       lang="en"
       className={`${outfit.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
+        <CursorGlow />
+        <nav className="border-b border-white/10 bg-black/50 backdrop-blur-md sticky top-0 z-40 p-4 font-semibold text-lg">
+          Catalyst
+        </nav>
+        {children}
+      </body>
     </html>
   );
 }
