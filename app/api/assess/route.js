@@ -36,7 +36,7 @@ Introduce yourself briefly as the AI Interviewer "Catalyst" and ask the FIRST sp
           { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: initPrompt }
         ],
-        model: "llama-3.3-70b-versatile",
+        model: "qwen/qwen3-32b",
         temperature: 0.7,
       });
 
@@ -89,7 +89,7 @@ Do not output any markdown formatting like \`\`\`json. Output ONLY valid, parsab
 
         const rawContent = completion.choices[0]?.message?.content || "{}";
         let parsedResult;
-        
+
         try {
           const cleanedContent = rawContent.replace(/```json/g, "").replace(/```/g, "").trim();
           parsedResult = JSON.parse(cleanedContent);
