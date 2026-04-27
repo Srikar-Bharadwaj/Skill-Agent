@@ -3,11 +3,17 @@
 import { useState, useRef } from "react";
 import { FileText, Briefcase, ArrowRight, Upload, Loader2 } from "lucide-react";
 
+import * as pdfjs from 'pdfjs-dist';
+import { createWorker } from 'tesseract.js';
+
+// Set up PDF.js Worker
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
 
 export default function UploadSection({ onStart }) {
   const [jd, setJd] = useState("");
   const [resume, setResume] = useState("");
   const [isParsingPdf, setIsParsingPdf] = useState(false);
+  const [ocrProgress, setOcrProgress] = useState(0);
   const fileInputRef = useRef(null);
 
   const handleSubmit = (e) => {
@@ -17,11 +23,43 @@ export default function UploadSection({ onStart }) {
     }
   };
 
+  const performOcr = async (file) => {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjs.getDocument({ data: arrayBuffer }).promise;
+    let fullText = "";
+
+    const worker = await createWorker('eng', 1, {
+      logger: (m) => {
+        if (m.status === 'recognizing text') {
+          setOcrProgress(Math.floor(m.progress * 100));
+        }
+      },
+    });
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const viewport = page.getViewport({ scale: 2.0 });
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      await page.render({ canvasContext: context, viewport }).promise;
+      const { data: { text } } = await worker.recognize(canvas);
+      fullText += text + "\n";
+    }
+
+    await worker.terminate();
+    return fullText;
+  };
+
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     setIsParsingPdf(true);
+    setOcrProgress(0);
+    
     const formData = new FormData();
     formData.append("file", file);
 
@@ -31,16 +69,24 @@ export default function UploadSection({ onStart }) {
         body: formData,
       });
       const data = await response.json();
-      if (data.text && data.text.trim()) {
+
+      if (data.text && data.text.trim().length > 50) { 
         setResume(data.text);
       } else {
-        alert("Could not extract text from this PDF. It may be an image-based PDF.");
+        console.log("No text found in PDF. Triggering OCR...");
+        const ocrText = await performOcr(file);
+        if (ocrText.trim()) {
+          setResume(ocrText);
+        } else {
+          alert("Could not extract text. The image might be too blurry.");
+        }
       }
     } catch (error) {
-      console.error("PDF upload error:", error);
+      console.error("Upload error:", error);
       alert("Error parsing PDF.");
     } finally {
       setIsParsingPdf(false);
+      setOcrProgress(0);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   };
@@ -48,7 +94,6 @@ export default function UploadSection({ onStart }) {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* JD Input */}
         <div className="space-y-3">
           <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
             <Briefcase className="w-4 h-4 text-primary" />
@@ -63,7 +108,6 @@ export default function UploadSection({ onStart }) {
           />
         </div>
 
-        {/* Resume Input */}
         <div className="space-y-3">
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 text-sm font-medium text-gray-300">
@@ -84,7 +128,7 @@ export default function UploadSection({ onStart }) {
                 className="flex items-center gap-1 text-xs bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 px-3 py-1.5 rounded-full cursor-pointer transition-colors border border-purple-500/20"
               >
                 {isParsingPdf ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
-                {isParsingPdf ? "Extracting..." : "Upload PDF"}
+                {isParsingPdf ? (ocrProgress > 0 ? `OCR: ${ocrProgress}%` : "Extracting...") : "Upload PDF"}
               </label>
             </div>
           </div>
@@ -93,7 +137,7 @@ export default function UploadSection({ onStart }) {
             value={resume}
             onChange={(e) => setResume(e.target.value)}
             disabled={isParsingPdf}
-            placeholder="Paste your current resume text here, or upload a PDF..."
+            placeholder={isParsingPdf ? "Scanning image-based PDF... please wait." : "Paste your current resume text here, or upload a PDF..."}
             className="w-full h-48 sm:h-64 bg-black/40 border border-white/10 rounded-xl p-4 text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all resize-none disabled:opacity-50"
           />
         </div>
