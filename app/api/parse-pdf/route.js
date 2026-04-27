@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import pdfParse from 'pdf-parse';
+import * as pdfjsLib from 'pdfjs-dist/legacy/build/pdf.mjs';
 
 export async function POST(req) {
   try {
@@ -11,11 +11,22 @@ export async function POST(req) {
     }
 
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-
-    const data = await pdfParse(buffer);
+    const data = new Uint8Array(arrayBuffer);
     
-    return NextResponse.json({ text: data.text });
+    const doc = await pdfjsLib.getDocument({
+      data,
+      useSystemFonts: true,
+      disableFontFace: true
+    }).promise;
+
+    let fullText = "";
+    for (let i = 1; i <= doc.numPages; i++) {
+      const page = await doc.getPage(i);
+      const textContent = await page.getTextContent();
+      fullText += textContent.items.map(item => item.str).join(' ');
+    }
+    
+    return NextResponse.json({ text: fullText });
   } catch (error) {
     console.error('PDF parsing error:', error);
     return NextResponse.json({ error: 'Failed to parse PDF' }, { status: 500 });
