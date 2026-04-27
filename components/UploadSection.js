@@ -3,11 +3,7 @@
 import { useState, useRef } from "react";
 import { FileText, Briefcase, ArrowRight, Upload, Loader2 } from "lucide-react";
 
-import * as pdfjs from 'pdfjs-dist';
-import { createWorker } from 'tesseract.js';
 
-// Set up PDF.js Worker using unpkg which correctly hosts the .mjs file
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export default function UploadSection({ onStart }) {
   const [jd, setJd] = useState("");
@@ -24,6 +20,13 @@ export default function UploadSection({ onStart }) {
   };
 
   const performOcr = async (file) => {
+    // Dynamically import to bypass Next.js SSR build crashes
+    const pdfjs = await import('pdfjs-dist');
+    const { createWorker } = await import('tesseract.js');
+    
+    // Set up PDF.js Worker using unpkg
+    pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjs.getDocument({ 
       data: arrayBuffer,
