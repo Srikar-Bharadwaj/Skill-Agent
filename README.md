@@ -2,7 +2,6 @@
 
 Catalyst is an intelligent, behavior-aware skill assessment platform that evaluates a candidate’s real-world capabilities against a job description using adaptive questioning, integrity analysis, and explainable feedback.
 
-🔗 **Live Demo:** https://skill-agent-production.up.railway.app/  
 📦 **GitHub:** https://github.com/Srikar-Bharadwaj/Skill-Agent
 
 ---
