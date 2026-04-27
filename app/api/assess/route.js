@@ -84,7 +84,7 @@ Do not output any markdown formatting like \`\`\`json. Output ONLY valid, parsab
             { role: "user", content: evaluationPrompt }
           ],
           model: "llama-3.3-70b-versatile",
-          temperature: 0.4, // Increased from 0.2 to allow for more variance in scoring
+          temperature: 0.0, // Strict determinism for consistent scores
         });
 
         const rawContent = completion.choices[0]?.message?.content || "{}";

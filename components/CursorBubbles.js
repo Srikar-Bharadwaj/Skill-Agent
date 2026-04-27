@@ -13,8 +13,8 @@ export default function CursorBubbles() {
       id: i,
       x: Math.random() * window.innerWidth,
       y: Math.random() * window.innerHeight,
-      size: Math.random() * 40 + 10,
-      opacity: Math.random() * 0.3 + 0.1,
+      size: Math.random() * 50 + 20, // slightly larger
+      opacity: Math.random() * 0.5 + 0.3, // significantly brighter
     }));
     setBubbles(newBubbles);
 
@@ -76,7 +76,7 @@ function Bubble({ bubble, mousePos }) {
     <motion.div
       animate={controls}
       initial={{ x: bubble.x, y: bubble.y }}
-      className="absolute rounded-full border border-primary/30 bg-primary/10 shadow-[0_0_15px_rgba(99,102,241,0.2)]"
+      className="absolute rounded-full border border-primary/60 bg-primary/30 shadow-[0_0_20px_rgba(99,102,241,0.5)]"
       style={{
         width: bubble.size,
         height: bubble.size,
