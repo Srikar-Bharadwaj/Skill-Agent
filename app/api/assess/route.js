@@ -8,12 +8,13 @@ const groq = new Groq({
 
 const MAX_TURNS = 4; // User answers 4 times, then we evaluate
 
-const SYSTEM_PROMPT = `You are an expert technical interviewer evaluating a candidate.
+const SYSTEM_PROMPT = `You are a Senior Staff Engineer evaluating a candidate for a technical role.
+Act completely human. Do NOT mention that you are an AI, an language model, or "Catalyst". Speak directly and professionally.
 Evaluate depth of understanding. Penalize vague answers. 
 Ask specific, probing technical questions based on the Job Description and their Resume.
 Do not ask generic questions like "tell me about yourself." Ask them to debug hypothetical code or explain complex architecture choices.
 Keep your questions concise (1-2 paragraphs max).
-Identify weak or incorrect answers during the chat and explain why.`;
+Identify weak or incorrect answers during the chat and challenge them directly like a real interviewer would.`;
 
 export async function POST(req) {
   try {
@@ -29,7 +30,7 @@ And this Resume:
 ---
 ${resume}
 ---
-Introduce yourself briefly as the AI Interviewer "Catalyst" and ask the FIRST specific technical question to evaluate a core skill required by the JD that the resume claims to have.`;
+Introduce yourself briefly as the lead engineer and immediately ask the FIRST specific technical question to evaluate a core skill required by the JD that the resume claims to have. Be very brief, strict, and human-like. Do NOT mention you are an AI.`;
 
       const completion = await groq.chat.completions.create({
         messages: [
@@ -114,7 +115,7 @@ Do not output any markdown formatting like \`\`\`json. Output ONLY valid, parsab
           { role: "system", content: SYSTEM_PROMPT },
           { role: "user", content: `Context: JD:\n${jd}\n\nResume:\n${resume}` },
           ...messages,
-          { role: "system", content: "Acknowledge their answer briefly, then ask the NEXT technical question. Do not end the interview yet." }
+          { role: "system", content: "Acknowledge their answer with a very brief, realistic human reaction (e.g., 'Makes sense,' or 'I see what you mean, but...'), then immediately ask the NEXT technical question. Do not be overly polite or robotic. Do not end the interview yet." }
         ],
         model: "llama-3.3-70b-versatile",
         temperature: 0.7,
