@@ -16,6 +16,8 @@ bun dev
 
 # Catalyst: AI-Powered Skill Assessment Agent
 
+**🚀 Live Demo:** [https://skill-agent-production.up.railway.app/](https://skill-agent-production.up.railway.app/)
+
 ## 🧩 Top-Tier Features
 
 ### 🧠 Integrity System
