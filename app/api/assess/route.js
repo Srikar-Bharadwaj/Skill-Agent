@@ -85,6 +85,7 @@ Do not output any markdown formatting like \`\`\`json. Output ONLY valid, parsab
           ],
           model: "llama-3.3-70b-versatile",
           temperature: 0.0, // Strict determinism for consistent scores
+          response_format: { type: "json_object" }, // Ensures valid JSON
         });
 
         const rawContent = completion.choices[0]?.message?.content || "{}";

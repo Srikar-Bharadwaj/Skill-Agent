@@ -6,8 +6,8 @@ import { FileText, Briefcase, ArrowRight, Upload, Loader2 } from "lucide-react";
 import * as pdfjs from 'pdfjs-dist';
 import { createWorker } from 'tesseract.js';
 
-// Set up PDF.js Worker
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.mjs`;
+// Set up PDF.js Worker using unpkg which correctly hosts the .mjs file
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 export default function UploadSection({ onStart }) {
   const [jd, setJd] = useState("");
@@ -25,7 +25,12 @@ export default function UploadSection({ onStart }) {
 
   const performOcr = async (file) => {
     const arrayBuffer = await file.arrayBuffer();
-    const pdf = await pdfjs.getDocument({ data: arrayBuffer }).promise;
+    const pdf = await pdfjs.getDocument({ 
+      data: arrayBuffer,
+      disableAutoFetch: true,
+      disableStream: true,
+      disableFontFace: true
+    }).promise;
     let fullText = "";
 
     const worker = await createWorker('eng', 1, {
