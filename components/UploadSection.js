@@ -22,28 +22,17 @@ export default function UploadSection({ onStart }) {
     if (!file) return;
 
     setIsParsingPdf(true);
+    const formData = new FormData();
+    formData.append("file", file);
 
     try {
-      const arrayBuffer = await file.arrayBuffer();
-      const pdfjsLib = await import("pdfjs-dist/build/pdf");
-      pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-      const pdf = await pdfjsLib.getDocument({ 
-        data: arrayBuffer,
-        disableAutoFetch: true,
-        disableStream: true,
-        disableFontFace: true
-      }).promise;
-      let fullText = "";
-      
-      for (let i = 1; i <= pdf.numPages; i++) {
-        const page = await pdf.getPage(i);
-        const textContent = await page.getTextContent();
-        const pageText = textContent.items.map(item => item.str).join(" ");
-        fullText += pageText + "\n";
-      }
-
-      if (fullText.trim()) {
-        setResume(fullText);
+      const response = await fetch("/api/parse-pdf", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      if (data.text && data.text.trim()) {
+        setResume(data.text);
       } else {
         alert("Could not extract text from this PDF. It may be an image-based PDF.");
       }
