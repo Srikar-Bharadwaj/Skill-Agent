@@ -1,71 +1,270 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🚀 Catalyst — AI-Powered Skill Assessment Agent
 
-## Getting Started
+Catalyst is an intelligent, behavior-aware skill assessment platform that evaluates a candidate’s real-world capabilities against a job description using adaptive questioning, integrity analysis, and explainable feedback.
 
-First, run the development server:
+🔗 **Live Demo:** https://skill-agent-production.up.railway.app/  
+📦 **GitHub:** https://github.com/Srikar-Bharadwaj/Skill-Agent
 
-```bash
+---
+
+## 🎯 Problem
+
+Traditional hiring systems rely on:
+- Resume keyword matching (ATS)
+- Static quizzes or MCQs
+- Surface-level interviews
+
+These approaches fail to measure:
+- Depth of understanding  
+- Real problem-solving ability  
+- Practical interview readiness  
+
+---
+
+## 💡 Solution
+
+Catalyst simulates a **real technical interviewer** and evaluates candidates across multiple dimensions:
+
+1. Resume vs Job Description analysis  
+2. Adaptive, multi-turn technical interview  
+3. Behavioral integrity monitoring  
+4. Depth + confidence evaluation  
+5. Explainable feedback with learning roadmap  
+
+> **“We don’t just evaluate answers — we evaluate thinking.”**
+
+---
+
+## 🔥 Key Features
+
+### 🧠 AI-Powered Adaptive Interview
+- Dynamic question generation based on candidate responses  
+- Focuses on weak areas  
+- Simulates real interview flow  
+
+---
+
+### 📊 ATS Resume Scanner & Enhancer
+- Generates ATS score (0–100)  
+- Detects missing keywords  
+- Suggests actionable resume improvements  
+
+---
+
+### ⚖️ Behavioral Integrity System
+Tracks suspicious patterns during assessment:
+- Paste detection  
+- Response latency analysis  
+- Fast-answer detection  
+
+> Flags potential assisted responses using behavioral signals  
+
+---
+
+### 🎯 Confidence & Depth Evaluation
+- **Confidence Score (0–100)**  
+- **Depth Rating** (Superficial → Moderate → Deep)  
+
+Evaluates *how well* a candidate understands concepts—not just correctness  
+
+---
+
+### 📚 Explainable Mistake Analysis
+For every weak or incorrect answer:
+- What went wrong  
+- Correct version of the answer  
+- Conceptual explanation  
+- Learning resource suggestions  
+
+---
+
+### 📈 Skill Gap Visualization
+- Match / Partial / Gap classification  
+- Visual progress indicators  
+- Clear hiring readiness insight  
+
+---
+
+### 🗂️ Revision Notes System
+- Stores previously asked questions  
+- Tracks weak topics  
+- Helps in pre-interview revision  
+
+---
+
+### 🎨 Context-Aware Interactive UI
+Dynamic interface that responds to system state:
+- 💬 Chat Mode → Blue  
+- ⏳ Processing → Purple  
+- ✅ Results → Green  
+
+---
+
+## 🧱 System Architecture
+User Input (Resume + JD)
+        ↓
+ATS Analysis Engine
+        ↓
+Adaptive Interview Engine
+        ↓
+Evaluation Engine (Confidence + Integrity)
+        ↓
+Structured JSON Output
+        ↓
+Results Dashboard
+
+
+---
+
+## ⚙️ Tech Stack
+
+### Frontend
+- Next.js (App Router)
+- React
+- Tailwind CSS
+- Framer Motion
+
+### Backend
+- Next.js API Routes
+- Node.js
+
+### AI Models
+- Groq (LLaMA3) / OpenAI / Anthropic
+
+### Storage
+- Lightweight JSON-based persistence (Notes system)
+
+### Deployment
+- Railway
+
+---
+
+## 🔍 How It Works
+
+### Step 1: Input
+- User provides Resume and Job Description  
+
+---
+
+### Step 2: ATS Analysis
+- Computes ATS score  
+- Identifies missing skills  
+
+---
+
+### Step 3: Technical Interview
+- AI asks 3–5 adaptive questions  
+- Tracks:
+  - responses  
+  - timing  
+  - behavioral signals  
+
+---
+
+### Step 4: Evaluation
+System analyzes:
+- Skill gaps  
+- Confidence level  
+- Depth of understanding  
+- Integrity signals  
+
+---
+
+### Step 5: Results Dashboard
+- Final verdict (Ready / Not Ready)  
+- Skill visualization  
+- Mistake explanations  
+- Personalized learning roadmap  
+- Revision notes  
+
+---
+
+## 🚀 Why Catalyst Stands Out
+
+- 🔥 Goes beyond ATS → evaluates real skills  
+- 🔥 Explainable feedback → not just scores  
+- 🔥 Behavioral integrity analysis  
+- 🔥 Adaptive interview simulation  
+- 🔥 Complete end-to-end system  
+
+---
+
+## 📊 Evaluation Criteria Alignment
+
+|    Criteria       |     Implementation          |   
+|-------------------|-----------------------------|
+| End-to-End System | Full working pipeline       |
+| Core AI Agent     | Adaptive questioning        |
+| Output Quality    | Structured + visual         |
+| Innovation        | Integrity + explainability  |
+| UX                | Multi-step interactive flow |
+| Code Quality      | Modular architecture        |
+
+---
+
+## ⚠️ Limitations
+
+- Behavioral integrity signals are heuristic-based  
+- LLM responses may vary slightly  
+- No real-time proctoring (camera/audio)  
+- Depends on external API reliability  
+
+---
+
+## 🔮 Future Enhancements
+
+### 🧠 Advanced AI Evaluation
+- Fine-tuned domain-specific models  
+- Multi-role interview simulations  
+
+### 🎥 Real-Time Proctoring
+- Webcam monitoring  
+- Voice authenticity detection  
+- Attention tracking  
+
+### 📊 Analytics Dashboard
+- Performance history  
+- Skill progression tracking  
+
+### 🗃️ Scalable Backend
+- PostgreSQL / MongoDB  
+- User authentication  
+
+### 🤖 Resume Intelligence
+- AI resume rewriting  
+- Keyword optimization  
+
+### 🧪 Advanced Integrity Detection
+- ML-based cheating detection  
+- Behavioral learning  
+
+### 🌐 Enterprise Integration
+- ATS integrations  
+- HR APIs  
+- Bulk candidate evaluation  
+
+--- 
+
+## 🧠 Final Insight
+
+Catalyst transforms hiring from **static evaluation** to **dynamic skill assessment**.
+
+It bridges the gap between:
+- Resume claims  
+- Actual capability  
+
+By combining:
+- adaptive questioning  
+- behavioral analysis  
+- explainable feedback  
+
+Catalyst provides a **holistic and realistic evaluation of candidate readiness**.
+
+---
+
+## 🛠️ Run Locally
+git clone https://github.com/Srikar-Bharadwaj/Skill-Agent
+cd Skill-Agent
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-# Catalyst: AI-Powered Skill Assessment Agent
-
-**🚀 Live Demo:** [https://skill-agent-production.up.railway.app/](https://skill-agent-production.up.railway.app/)
-
-## 🧩 Top-Tier Features
-
-### 🧠 Integrity System
-Implemented a behavior-aware integrity monitoring system that evaluates user interaction patterns, including paste events and adaptive response latency, to flag potentially assisted responses.
-
-### 🧠 Confidence & Depth Analysis
-Introduced AI-driven confidence scoring and depth analysis to assess not just correctness but conceptual understanding during the interview.
-
-### 🧠 Explainable Mistakes
-Enabled explainable feedback by generating corrected responses and reasoning, transforming the system into an interactive learning assistant.
-
-### 🧠 Context-Aware UI
-Designed a state-aware UI that dynamically adapts visual feedback based on system state, enhancing engagement during assessments.
-
-### 🧠 ATS Scan & Resume Upload
-Evaluates resumes against job descriptions using LLM-based semantic matching. Supports direct PDF uploads with client-side to serverless text extraction.
-
-### 🧠 Pre-Interview Revision Mode
-Built a lightweight revision system that surfaces previously asked questions and weak areas, enabling targeted pre-interview preparation.
-
-## 🎯 Demo Script Guide
-
-When demoing this project, follow this narrative for maximum impact:
-1. "We start with ATS analysis, supporting direct PDF uploads."
-2. "Then we conduct adaptive questioning based on the ATS results."
-3. "We don't just evaluate correctness — we evaluate depth and confidence."
-4. "We also track behavioral integrity signals like paste events and response latency."
-5. "Finally, we generate explainable feedback and a targeted learning roadmap."
-
-## Overview
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
